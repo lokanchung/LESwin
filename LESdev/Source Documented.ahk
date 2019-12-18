@@ -391,6 +391,16 @@ Loop, Read, %A_ScriptDir%\settings.ini
 		}
 	addctrlshiftz := result[2]
 	}
+
+	if (RegExMatch(line, "swaptabbehavior\s=\s") != 0){
+	result := StrSplit(line, "=", A_Space)
+	if !(result[2] = 0 or result[2] = 1){
+		msgbox % "Invalid parameter for " . Chr(34) "addctrlshiftz" . Chr(34) . ". Valid parameters are: 1 and 0. The program will shut down now."
+		run, %A_ScriptDir%\settings.ini
+		exitapp
+		}
+	swaptabbehavior := result[2]
+	}
 	
 	if (RegExMatch(line, "0todelete\s=\s") != 0){
 	result := StrSplit(line, "=", A_Space)
@@ -616,6 +626,10 @@ Else{
 Hotkey, !e, envelopemode
 if (addctrlshiftz = 1){
 Hotkey, ^+z, redo
+}
+if (swaptabbehavior = 1) {
++Tab::Send {Tab}
+Tab::+Tab
 }
 if (0todelete = 1){
 Hotkey, ~0, double0delet
